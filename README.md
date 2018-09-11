@@ -1,6 +1,6 @@
 # Quantum Computer Simulator
 
-This project lets you code a quantum computer in your browser using QASM.
+This project lets you code a quantum computer in your browser using the QASM programming language.
 
 It is written in JavaScript and runs in your browser, so you don't have to sign up with a big company, wait in a queue, or spend money to test an experiment.
 
