@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'swiss_ch';
+  src: url('swiss_ch.eot');
+  src: url('swiss_ch.eot?#iefix') format('embedded-opentype'),
+         url('swiss_ch.woff2') format('woff2'),
+         url('swiss_ch.woff') format('woff'),
+         url('swiss_ch.ttf') format('truetype'),
+         url('swiss_ch.svg#ciclefina') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

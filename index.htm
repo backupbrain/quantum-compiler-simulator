@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf8">
+	<meta name="author" content="Tony Gaitatzis">
+	<meta name="description" content="Codable Quantum Computer Simulator">
+	<title>Quantum Computer Simulator</title>
+	<link rel="stylesheet" href="assets/styles/screen.css" />
+	<link rel="stylesheet" href="assets/fonts/swiss-cheesed/swiss_ch.css" />
+	<script src="assets/scripts/jquery/3.3.1/jquery.min.js"></script>
+	<script src="assets/scripts/mathjs/5.0.3/math.min.js"></script>
+	<script src="assets/scripts/qcpu.js"></script>
+	<script src="assets/scripts/qasm_parser.js"></script>
+	<script src="assets/scripts/qasm_editor.js"></script>
+	<script src="assets/scripts/qasm_runner.js"></script>
+	<script src="assets/scripts/simulator.js"></script>
+</head>
+<body>
+
+	<header>
+		<section>
+			<h1>Quantum Computer Simulator</h1>
+		</section>
+	</header>
+
+	<article id="main">
+		<section>
+			<div id="console">
+				<div id="code_container">
+					<div id="code_title" class="title">Code:</div>
+					<div id="code" contentEditable="true"></div>
+				</div>
+				<div id="output_container">
+					<div id="output_title" class="title">Output:</div>
+					<div id="output"></div>
+					<div id="log"></div>
+				</div>
+			</div>
+
+			<div id="controls">
+				<label for="num_runs">
+					Number of times to run the simulation:
+					<input id="num_iterations" type="number" min="1" value="100" size="7" />
+				</label>
+				<button id="run">Simulate</button>
+			</div>
+
+			</section>
+	</article>
+	<article id="supported_functions">
+		<section>
+			Supported Functions:
+
+			<table id="functions">
+				<thead>
+					<tr>
+						<th>Function</th>
+						<th>Example</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+					<tbody>
+					<tr>
+						<td>qreg</td>
+						<td>qreg q[<em>N</em>];</td>
+						<td>Register <em>N</em> quantum bits</td>
+					</tr>
+					<tr>
+						<td>creg</td>
+						<td>creg c[<em>N</em>];</td>
+						<td>Register <em>N</em> classical bits</td>
+					</tr>
+					<tr>
+						<td><a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Universal_quantum_gates#Measurement">measure</a></td>
+						<td>measure q[<em>q_id</em>] -> c[<em>c_id</em>];</td>
+						<td>Collapse qubit <em>q_id</em> into classicel bit <em>c_id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#7220">h</a></td>
+						<td>h q[<em>id</em>];</td>
+						<td>Perform hadamard gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#edbe">x</a></td>
+						<td>x q[<em>id</em>];</td>
+						<td>Perform Pauli X-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#2679">y</a></td>
+						<td>y q[<em>id</em>];</td>
+						<td>Perform Pauli Y-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#2679">z</a></td>
+						<td>z q[<em>id</em>];</td>
+						<td>Perform Pauli Z-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#2679">s</a></td>
+						<td>s q[<em>id</em>];</td>
+						<td>Perform S-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#2679">sdg</a></td>
+						<td>sdg q[<em>id</em>];</td>
+						<td>Perform S&#10013;-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#2679">t</a></td>
+						<td>t q[<em>id</em>];</td>
+						<td>Perform T-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://towardsdatascience.com/demystifying-quantum-gates-one-qubit-at-a-time-54404ed80640#2679">sdg</a></td>
+						<td>tdg q[<em>id</em>];</td>
+						<td>Perform T&#10013;-gate on qubit <em>id</em></td>
+					</tr>
+					<tr>
+						<td><a href="https://en.wikipedia.org/wiki/Quantum_logic_gate#Universal_quantum_gates#Circuit_composition_and_entangled_states">cx</a></td>
+						<td>cx q[<em>id1</em>], q[<em>id2</em>];</td>
+						<td>Entangle quantum bit <em>id1</em> with <em>id2</em></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</article>
+
+	<footer>
+		<div id="copyright">
+			&copy; 2018 <a href="https://github.com/backupbrain">Tony Gaitatzis</a>, <a href="https://opensource.org/licenses/MIT">MIT License</a>
+		</div>
+	</footer>
+
+</body>
+</html>

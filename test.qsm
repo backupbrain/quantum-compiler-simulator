@@ -1,0 +1,15 @@
+// Name of Experiment: Coin Flip v1
+// Author: Tony Gaitatzis <backupbrain@gmail.com>
+
+OPENQASM 2.0;
+include "qelib1.inc";
+
+qreg q[3]; // declare qbits
+creg c[3]; // declare registers
+
+h q[1]; // place heads side into superposition
+cx q[1],q[0]; // entangle heads and tails
+x q[1]; // set tails as opposite of heads
+measure q[0] -> c[0]; // measure heads, collapsing superposition
+measure q[1] -> c[1]; // measure tails
+// because of entanglement, heads and tails will always be opposite
