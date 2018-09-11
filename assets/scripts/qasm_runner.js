@@ -32,11 +32,13 @@ SOFTWARE.
 function QasmRunner() {
 }
 
-QasmRunner.prototype.run = function(script, numIterations) {
+QasmRunner.prototype.run = function(script, numIterations, callback) {
 
 	this.results = {};
 	this.totals = {};
 	this.values = [];
+
+	results = [];
 
 	for (var iteration = 0; iteration < numIterations; iteration++) {
 		qcpu = new QCPU();
@@ -46,6 +48,12 @@ QasmRunner.prototype.run = function(script, numIterations) {
 		this.results[iteration] = registers;
 
 		values = this.registersToString(registers);
+		result = {
+			"iteration": iteration,
+			"result": values
+		}
+		results.push(result);
+
 		if (!this.inArray(values, this.values)) {
 			this.values.push(values);
 		}
@@ -66,7 +74,7 @@ QasmRunner.prototype.run = function(script, numIterations) {
 			rows.push(row);
 		}
 
-		const tableMarkup = `<table id="simulator_output">
+		const tableMarkup = `<table id="simulator_overview">
 			<thead>
 				<tr>
 					<th>Output</th><th>Percent Output</th><th>Num Results</th>
@@ -76,11 +84,28 @@ QasmRunner.prototype.run = function(script, numIterations) {
 			</tbody>
 		</table>`;
 
-		$("#output").html(tableMarkup);
+		$("#output_overview").html(tableMarkup);
 
 		qcpu = null;
 		parser = null;
+
+		if (callback != null) {
+			percentComplete = 100 * iteration / numIterations;
+			callback(percentComplete)
+		}
 	}
+	const rawDataTableMarkup = `<table id="simulator_output_data">
+		<thead>
+			<tr>
+				<th>Iteration</th><th>Output</th>
+			</tr>
+		</thead><tbody>
+			${results.map(result => `<tr><td>${result.iteration}</td><td><code>${result.result}</code></td></tr>`).join("")}
+		</tbody>
+	</table>`;
+
+	$("#output_raw_data").html(rawDataTableMarkup);
+
 	//console.log(this.values);
 	//console.log(this.results);
 }

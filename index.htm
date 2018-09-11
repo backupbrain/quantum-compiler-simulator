@@ -13,6 +13,8 @@
 	<script src="assets/scripts/qasm_parser.js"></script>
 	<script src="assets/scripts/qasm_editor.js"></script>
 	<script src="assets/scripts/qasm_runner.js"></script>
+	<script src="assets/scripts/filesystem.js"></script>
+	<script src="assets/scripts/filemanager.js"></script>
 	<script src="assets/scripts/simulator.js"></script>
 
 	<!-- Facebook OpenGraph -->
@@ -55,13 +57,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<section>
 			<div id="console">
 				<div id="code_container">
-					<div id="code_title" class="title">Code:</div>
+					<h2 id="code_title" class="title">Code:</h2>
 					<div id="code" contentEditable="true"></div>
+					<div id="filename_controls">
+						<label for="filename">Filename: 
+							<input id="filename" value="filename" />
+						</label>
+						<button id="save">Save</button>
+					</div>
 				</div>
 				<div id="output_container">
-					<div id="output_title" class="title">Output:</div>
-					<div id="output"></div>
-					<div id="log"></div>
+					<div id="visible_output" class="start_hidden">
+						<h2 id="output_overview_title" class="title">Output:</h2>
+						<h3 id="output_overview">Summary</h3>
+						<div id="log"></div>
+						<h3 id="output_raw_data_overview">Raw Data</h3>
+						<div id="output_raw_data"></div>
+					</div>
 				</div>
 			</div>
 
@@ -71,9 +83,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 					<input id="num_iterations" type="number" min="1" value="100" size="7" />
 				</label>
 				<button id="run">Simulate</button>
+				<div id="progress_bar_container" class="start_hidden">
+					<div id="progress_bar">
+						<div id="progress"></div>
+					</div>
+				</div>
 			</div>
-
-			</section>
+			<div id="file_list">
+				<h2>Your Files</h2>
+				<div id="files"></div>
+			</div>
+		</section>
 	</article>
 	<article id="supported_functions">
 		<section>

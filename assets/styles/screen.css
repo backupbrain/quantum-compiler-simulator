@@ -23,6 +23,12 @@ header h1 {
 	font-weight: normal;
 	color: #757574;
 }
+h2, h3 {
+	margin: 0px;
+	font-weight: normal;
+	font-size: 1em;
+	color: #A2A2A2;
+}
 section {
 	padding: 0px 20px;
 }
@@ -53,7 +59,10 @@ section {
 }
 .title {
 	padding-bottom: 20px;
-	color: #757574;
+	/* color: #757574; */
+}
+#output_raw_data_overview {
+	padding-top: 20px;
 }
 #output {
 	/* background: #141413; */
@@ -77,13 +86,35 @@ section {
 #controls {
 	padding-top: 20px;
 	color: #757574;
-	clear: both;
+	width: 49%;
+	clear: left;
 }
 #num_iterations {
 	padding: 5px;
 	width: 4em;
 }
-#run {
+#file_list {
+	padding-top: 20px;
+	width: 49%;
+}
+#filename_controls {
+	padding-top: 20px;
+}
+#progress_bar_container {
+	padding-top: 20px;
+}
+#progress_bar {
+	border: 1px solid #757574;
+	background: #141413;
+}
+#progress {
+	height: 10px;
+	background: #5C5C5E;
+}
+.start_hidden {
+	display: none;
+}
+button {
 	background: #5C5C5E;
 	color: #F8F7F8;
 	border-radius: 5px;
@@ -92,7 +123,9 @@ section {
 	padding: 10px 20px;
 	clear: both;
 }
-
+article {
+	clear: both;
+}
 footer {
 	color: #757574;
 	padding: 50px 70px 70px;
@@ -113,6 +146,7 @@ footer a {
 table {
 	margin-top: 20px;
 	border-collapse: collapse;
+	width: 100%;
 }
 table tbody {
 	background-color: #141413;

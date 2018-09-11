@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf8">
+	<meta name="author" content="Tony Gaitatzis">
+	<meta name="description" content="Codable Quantum Computer Simulator">
+	<title>Quantum Computer Simulator</title>
+	<link rel="stylesheet" href="assets/styles/screen.css" />
+	<link rel="stylesheet" href="assets/fonts/swiss-cheesed/swiss_ch.css" />
+	<script src="assets/scripts/jquery/3.3.1/jquery.min.js"></script>
+	<script src="assets/scripts/mathjs/5.0.3/math.min.js"></script>
+	<script src="assets/scripts/qcpu.js"></script>
+	<script src="assets/scripts/qasm_parser.js"></script>
+	<script src="assets/scripts/qasm_editor.js"></script>
+	<script src="assets/scripts/qasm_runner.js"></script>
+	<script src="assets/scripts/simulator.js"></script>
+	<script src="assets/scripts/filesystem.js"></script>
+	<script src="assets/scripts/filemanager.js"></script>
+
+	<!-- Facebook OpenGraph -->
+	<meta property="og:url" content="https://backupbrain.github.io/quantum-compiler-simulator/" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Simulate a Quantum Computer in your Browser" />
+	<meta property="og:description" content="Learn to code a quantum computer with this browser-based simulator." />
+	<meta property="og:image" content="https://backupbrain.github.io/quantum-compiler-simulator/assets/images/quantum-computer.jpg" />
+
+	<!-- Twitter Cards -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@gaitatzis" />
+	<meta name="twitter:creator" content="@gaitatzis" />
+	<meta property="og:url" content="https://backupbrain.github.io/quantum-compiler-simulator/" />
+	<meta property="og:title" content="Simulate a Quantum Computer in your Browser" />
+	<meta property="og:description" content="Learn to code a quantum computer with this browser-based simulator." />
+	<meta property="og:image" content="https://backupbrain.github.io/quantum-compiler-simulator/assets/images/quantum-computer.jpg" />
+
+	<script>
+var filesystem = null;
+var filemanager = null;
+
+$(document).ready(function() {
+	filesystem = new FileSystem();
+	filemanager = new FileManager("files");
+
+	$("#save").click(function(event) {
+		filename = $("#filename").val();
+		text = $("#editor").html();
+		filesystem.save(filename, text);
+		filemanager.refreshFileList();
+	});
+});
+
+
+	</script>
+
+</head>
+<body>
+	<header>
+		<section>
+			<h1>Quantum Computer Simulator</h1>
+		</section>
+	</header>
+
+	<article id="main">
+		<section>
+
+			<div id="editor" contenteditable="true">
+				asneuthns
+				satnehunth
+				anetuhasnetuh
+			</div>
+			<input id="filename" value="filename" />
+			<button id="save">Save</button>
+			<h2>Your Files</h2>
+
+			<div id="files"></div>
+
+
+		</section>
+	</article>
+
+	<footer>
+		<div id="copyright">
+			&copy; 2018 <a href="https://github.com/backupbrain">Tony Gaitatzis</a>, <a href="https://opensource.org/licenses/MIT">MIT License</a>
+		</div>
+	</footer>
+
+</body>
+</html>

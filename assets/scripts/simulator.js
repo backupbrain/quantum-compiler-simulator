@@ -30,6 +30,8 @@ SOFTWARE.
 
 var editor = null;
 var runner = null;
+var filesystem = null;
+var filemanager = null;
 
 math.config({
   number: 'BigNumber', // Default type of number:
@@ -42,10 +44,15 @@ qasm_script = '// Name of Experiment: Coin Flip v1\n\nOPENQASM 2.0;\n\nqreg q[3]
 $(document).ready(function() {
 	runner = new QasmRunner();
 	editor = new QasmEditor("code");
+	filesystem = new FileSystem();
+	filemanager = new FileManager("files");
 
 	$("#code").html(qasm_script);
 
 	$("#run").click(function(event) {
+		$("#visible_output").css("display", "none");
+		$("#progress_bar_container").css("display", "block");
+
 		startTime_ms = Date.now();
 		button = $("#run");
 		oldButtonText = button.html();
@@ -54,9 +61,8 @@ $(document).ready(function() {
 		qasm_script = $("#code").html();
 		qasm_script = qasm_script.replace(/\<br\>/g, "\n");
 		qasm_script = qasm_script.replace(/\&gt;/g, ">");
-		//console.log(qasm_script);
 		numIterations = parseInt($("#num_iterations").val());
-		runner.run(qasm_script, numIterations);
+		runner.run(qasm_script, numIterations, updateProgressBar);
 
 		endTime_ms = Date.now();
 		timeLapse_ms = endTime_ms - startTime_ms;
@@ -65,5 +71,20 @@ $(document).ready(function() {
 		);
 		button.prop("disabled", false);
 		button.html(oldButtonText);
+		$("#visible_output").css("display", "block");
+		$("#progress_bar_container").css("display", "none");
+	});
+
+	$("#filename").val(filemanager.createRandomString());
+	$("#save").click(function(event) {
+		filename = $("#filename").val();
+		text = $("#editor").html();
+		filesystem.save(filename, text);
+		filemanager.refreshFileList();
 	});
 });
+
+function updateProgressBar(percent) {
+	console.log("progress: " + percent);
+	$("#progress_bar #progress").width(percent + "%");
+}
