@@ -6,16 +6,19 @@
 	<meta name="description" content="Codable Quantum Computer Simulator">
 	<title>Quantum Computer Simulator</title>
 	<link rel="stylesheet" href="assets/styles/screen.css" />
-	<link rel="stylesheet" href="assets/fonts/swiss-cheesed/swiss_ch.css" />
+	<link rel="stylesheet" href="assets/styles/test.css" />
+	<link rel="stylesheet" href="assets/fonts/swiss-cheesed/swiss_ch.css" /><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	<script src="assets/scripts/jquery/3.3.1/jquery.min.js"></script>
 	<script src="assets/scripts/mathjs/5.0.3/math.min.js"></script>
 	<script src="assets/scripts/qcpu.js"></script>
 	<script src="assets/scripts/qasm_parser.js"></script>
 	<script src="assets/scripts/qasm_editor.js"></script>
 	<script src="assets/scripts/qasm_runner.js"></script>
-	<script src="assets/scripts/simulator.js"></script>
+	<!--script src="assets/scripts/simulator.js"></script-->
 	<script src="assets/scripts/filesystem.js"></script>
-	<script src="assets/scripts/filemanager.js"></script>
+	<script src="assets/scripts/qasm_file.js"></script>
+	<script src="assets/scripts/filemanager1.js"></script>
+	<script src="assets/scripts/lz-string.min.js"></script>
 
 	<!-- Facebook OpenGraph -->
 	<meta property="og:url" content="https://backupbrain.github.io/quantum-compiler-simulator/" />
@@ -34,19 +37,75 @@
 	<meta property="og:image" content="https://backupbrain.github.io/quantum-compiler-simulator/assets/images/quantum-computer.jpg" />
 
 	<script>
+
+var editor = null;
+var runner = null;
 var filesystem = null;
 var filemanager = null;
 
-$(document).ready(function() {
-	filesystem = new FileSystem();
-	filemanager = new FileManager("files");
+math.config({
+  number: 'BigNumber', // Default type of number:
+                       // 'number' (default), 'BigNumber', or 'Fraction'
+  precision: 64        // Number of significant digits for BigNumbers
+})
 
-	$("#save").click(function(event) {
-		filename = $("#filename").val();
-		text = $("#editor").html();
-		filesystem.save(filename, text);
-		filemanager.refreshFileList();
+qasm_script = '// Name of Experiment: Coin Flip v1\n\nOPENQASM 2.0;\n\nqreg q[3]; // declare qbits\ncreg c[3]; // declare registers\n\nh q[1]; // place heads side into superposition\ncx q[1],q[0]; // entangle heads and tails\nx q[1]; // set tails as opposite of heads\nmeasure q[0] -> c[0]; // measure heads, collapsing superposition\nmeasure q[1] -> c[1]; // measure tails\n// because of entanglement, heads and tails will always be opposite'
+
+
+function updateProgressBar(percent) {
+	console.log("progress: " + percent);
+	$("#progress_bar #progress").width(percent + "%");
+}
+
+$(document).ready(function() {
+
+	runner = new QasmRunner();
+	editor = new QasmEditor("code");
+	filesystem = new FileSystem();
+	filemanager = new FileManager1("file_list_container");
+
+	$("#code").html(qasm_script);
+
+	$("#simulator_run").click(function(event) {
+		console.log("running simulations...");
+		$("#visible_output").css("display", "none");
+		$("#progress_bar_container").css("display", "block");
+
+		startTime_ms = Date.now();
+		button = $("#simulator_run");
+		oldButtonText = button.html();
+		button.text("Simulating...");
+		button.prop("disabled", true);
+		qasm_script = $("#code").html();
+		qasm_script = qasm_script.replace(/\<br\>/g, "\n");
+		qasm_script = qasm_script.replace(/\&gt;/g, ">");
+		numIterations = parseInt($("#simulator_num_iterations").val());
+		runner.run(qasm_script, numIterations, updateProgressBar);
+
+		endTime_ms = Date.now();
+		timeLapse_ms = endTime_ms - startTime_ms;
+		$("#log").html(
+			numIterations + " iterations in " + timeLapse_ms + " milliseconds"
+		);
+		button.prop("disabled", false);
+		button.html(oldButtonText);
+		$("#visible_output").css("display", "block");
+		$("#progress_bar_container").css("display", "none");
+		console.log("done");
 	});
+
+	$("#file_save").click(function(event) {
+		filename = $("#editable_filename").html();
+		code = $("#code").html();
+		qasmFile = new QasmFile();
+		qasmFile.code = code;
+		console.log(filename);
+		console.log(qasmFile);
+		filesystem.save(filename, qasmFile);
+		//filemanager.refreshFileList();
+	});
+
+	$("#editable_filename").html(filemanager.createRandomString() + ".qsm");
 });
 
 
@@ -62,19 +121,27 @@ $(document).ready(function() {
 
 	<article id="main">
 		<section>
+			<div id="editor_container">
+				<div id="editor_toolbar">
+					<button id="file_open" alt="open"><i class="fas fa-folder-open"></i></button>
 
-			<div id="editor" contenteditable="true">
-				asneuthns
-				satnehunth
-				anetuhasnetuh
+					<label for="editable_filename">File Name: 
+						<div id="editable_filename" contentEditable="true"></div>
+					</label>
+
+					<button id="file_save" alt="save"><i class="fas fa-save"></i></button>
+					<label for="simulator_num_iterations">Number of Simulations: 
+						<input type="number" id="simulator_num_iterations" value="100" size="5" />
+					</label>
+					<button id="simulator_run" alt="Run Simulation"><i class="fas fa-play"></i></button>
+				</div>
+				<div id="progress_bar_container" class="start_hidden">
+					<div id="progress_bar">
+						<div id="progress">&nbsp;</div>
+					</div>
+				</div>
+				<div id="code" contentEditable="true"></div>
 			</div>
-			<input id="filename" value="filename" />
-			<button id="save">Save</button>
-			<h2>Your Files</h2>
-
-			<div id="files"></div>
-
-
 		</section>
 	</article>
 
@@ -83,6 +150,36 @@ $(document).ready(function() {
 			&copy; 2018 <a href="https://github.com/backupbrain">Tony Gaitatzis</a>, <a href="https://opensource.org/licenses/MIT">MIT License</a>
 		</div>
 	</footer>
+
+<div id="file_modal_dimmer" class="modal_dimmer start_hidden">
+	<div id="file_lister" class="start_hidden">
+		<div class="modal_title">
+			<div class="title_text">Open File</div>
+			<div class="close_modal">
+				<button class="close_modal"><i class="fas fa-times"></i></button>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="file_list_container" class="file_list_container">
+			<table>
+				<thead>
+					<tr>
+						<th>File Name</th>
+						<th>Date Created</th>
+						<th>Date Modified</th>
+						<th>Size</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><a href="">One</a></td><td>Date</td><td>Date</td><td>Size</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
 
 </body>
 </html>

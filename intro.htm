@@ -54,54 +54,101 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<header>
 		<section>
 			<h1>Quantum Computer Simulator</h1>
-			<p><a href="intro.htm">Introduction to Quantum Programming</a></p>
+			<p><a href="index.htm">Program the Quantum Computer Simulator</a></p>
 		</section>
 	</header>
 
 	<article id="main">
 		<section>
-			<div id="console">
-				<div id="code_container">
-
-			<div id="editor_container">
-				<div id="editor_toolbar">
-					<button id="file_new" alt="New File"><i class="fas fa-file-alt"></i></button>
-					<button id="file_open" alt="Open File from Local Storage"><i class="fas fa-folder-open"></i></button>
-
-					<label for="editable_filename">File: 
-						<div id="editable_filename" contentEditable="true"></div>
-					</label>
-
-					<button id="file_save" alt="Save File to Local Storage"><i class="fas fa-save"></i></button>
-					<label for="simulator_num_iterations"># Runs: 
-						<input type="number" id="simulator_num_iterations" value="100" size="5" />
-					</label>
-					<button id="simulator_run" alt="Run Simulation"><i class="fas fa-play"></i></button>
-				</div>
-				<div id="progress_bar_container" class="start_hidden">
-					<div id="progress_bar">
-						<div id="progress">&nbsp;</div>
-					</div>
-				</div>
-				<div id="code" contentEditable="true"></div>
-			</div>
-
-				</div>
-				<div id="output_container">
-					<div id="visible_output" class="start_hidden">
-						<h2 id="output_overview_title" class="title">Output:</h2>
-						<h3 id="output_overview">Summary</h3>
-						<div id="log"></div>
-						<h3 id="output_raw_data_overview">Raw Data</h3>
-						<div id="output_raw_data"></div>
-					</div>
-				</div>
-			</div>
+			<h2>Introduction to Quantum Computer Programming</h2>
+			<p>
+				Programming quantum computers is fundamentally different from programming classical computers.
+			</p>
+			<p>
+				Today, quantum computers are programmed in the QASM language, an assembly-type language each qubit is manipuleted one line a time. This is similar to how traditional computers were programmed in the 1950s.
+			</p>
+			<p>
+				Quantum computers will not replace traditional computers. The way they work is quite different, meaning they can solve problems that were complicated for traditional computers. Quantum computers enables radically new ways of solving problems with computers. Quantum computers will touch Artificial intelligence, cryptography, phiysics and chemistry simulations, data organization, and more.
+			</p>
+			<h3>Bits versus Qubits</h3>
+			<p>
+				Traditional computers store bits data using transistors. These transistors can either be on or off, typically represented as 1 or 0.
+			</p>
+			<p>
+				Quantum computers use qubits - single atomic particles than can be in an "up" or "down" state - typically measured as 1 or 0. These particles can also be put into a superposition - a special state where they are both up and down at the same time.
+			</p>
+			<h3>Superposition</h3>
+			<p>
+				 Superposition is special because it allows for controlled randomness. The qubit can be manipulated to have a known probablity of ending up in the up or down state.
+			</p>
+			<p>
+				The superposition state is unstable, and once measured will collapse back into a discrete up or down state, but the probablity of doing so is dependent on the properties of the qubit's superposition at that time. 
+			</p>
+			<p>
+				An important point to note is that superposition results in <strong>true randomness</strong> where the probabilities can be controlled. This is considered impossible for a traditional computer and has interetesting implications for cryptography, wheere random numbers known as "nonces" are important.
+			</p>
+			<p>
+				A basic superposition can be accessed using the <code>h</code> gate. When measured, the qubit will collapse into 0 or 1 with a 50% propability. This is similar to telling a traditional computer to preform <code>round(rand(0, 1))</code>.
+			</p>
+			<h3>Entanglement</h3>
+			<p>
+				Two or more qubits can be entangled, meaning that what happens to one happens to the other. Once entangled, an action taken on one qubit affects the entangled qubits simultaneously. For example, if a qubit is put in superposition and entangled with another qubit, both qubits are then in the same superposition. When one is measured, it collapses randomly to 0 or 1. The entangled qubit simultaneously collapes to the same value.
+			</p>
+			<p>
+				Entanglement has interesting implications in encrypted communications, because the entangled qubits never touch or move, and measuring them breaks the entanglement. This means that a hacker would destroy a message by trying to read it.
+			</p>
+			<p>
+				An entanglement between two qubits can be performed with the <code>cx</code> gate. This is similar to telling a traditional computer something like:
+				<code>
+					a = b;
+				</code>
+			</p>
+			<p>
+				By combining superposition and entanglement to create more interesting outcomes.
+			</p>
+			<p>
+				One or more entangled qubits can also be manipulated so that they have different superposition properties, yet affect each other. For instance if two qubits are entangled and one is set to be the Pauli-X (a type of not gate) of the other, than when one is mearused, the other qubit reports the opposite value.
+			</p>
+			<p>
+				In this example, one qubit is put into superposition with the <code>h</code> gate, then entangled with another using the <code>cx</code> gate, then the other qubit's superposition is inverted with the <code>x</code> gate, like this:
+			</p>
+			<pre>
+				h q[0];
+				cx q[0], q[1];
+				x q[1];
+			</pre>
+			<p>
+				This is similar to telling a classical computer something like:
+			</p>
+			<pre>
+				a = round(rand(0, 1));
+				b = !a;
+			</pre>
+			<h3>Running Iterative Tests</h3>
+			<p>
+				On a quantum computer it is typically useful to run the same code many times, because often the code include randomness and the programmer typically wants to see how often the quantum computer settles on discrete outputs.
+			</p>
+			<p>
+				For this reason you may want to alter the "# iterations" field before running a program. The raw data table will show the output binary values each time the simulator ran the code, and the summary table will show the percent each unique binary value was reached.
+			</p>
+			<h3>About the Simulator</h3>
+			<p>
+				There are a few quantum computers today. They are amazing, yet challenging to use because there is often a queue or limited qubits. This simulator was designed to allow users to program and test simple quantum computer programs without needing to wait for their code to run on someone else's servers.
+			</p>
+			<p>
+				This simulator is what's known as an "ideal quantum computer," meaning that any and all qubits can be entagled and qubits don't collapse from superposition unexpectedly. A real quantum computer has physical limitations on which qubits can be entangled and for how long superposition states can be maintained. Code you write here may need to be altered slightly to work on a real quantum computer. 
+			</p>
+			<p>
+				This simulator runs on your web browser in JavaScript, meaning that you don't need a web server or an account somewhere to run it. You do not share this simulator with other people. It is yours to enjoy. Be careful, Your computer will run out of memory if you try to create too many qubits.
+			</p>
 		</section>
 	</article>
 	<article id="supported_functions">
 		<section>
-			Supported Functions:
+			<h2>Supported Functions:</h2>
+			<p>
+				The functions currentnly supported by the simulator are as follows:
+			</p>
 
 			<table id="functions">
 				<thead>

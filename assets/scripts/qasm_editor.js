@@ -122,6 +122,48 @@ QasmEditor.prototype.createRange = function(node, chars, range) {
 			}
 		}
 	} 
-
 	return range;
 };
+
+QasmEditor.prototype.getCleanedCodeFromEditor = function() {
+	code = $("#code").html();
+	code = code.replace(/\<br\>/g, "\n");
+	code = code.replace(/\&gt;/g, ">");
+	return code;
+}
+
+QasmEditor.prototype.getFileName = function() {
+	filename = $("#editable_filename").html();
+	return filename;
+}
+
+QasmEditor.prototype.getNumIterations = function() {
+	numIterations = parseInt($("#simulator_num_iterations").val());
+	return numIterations;
+}
+
+QasmEditor.prototype.loadFile = function(filename, code, numIterations) {
+	$("#editable_filename").html(filename);
+	$("#code").html(code);
+	$("#simulator_num_iterations").val(numIterations);
+}
+
+QasmEditor.prototype.save = function() {
+	outputs = runner.results;
+	summary = runner.summary;
+	filename = $("#editable_filename").html();
+	code = editor.getCleanedCodeFromEditor();
+	numIterations = editor.getNumIterations();
+	qasmFile = new QasmFile();
+	qasmFile.code = code;
+	qasmFile.numIterations = numIterations;
+	qasmFile.summary = summary;
+	qasmFile.outputs = outputs;
+	filesystem.save(filename, qasmFile);
+}
+
+QasmEditor.prototype.new = function() {
+	$("#code").html("");
+	$("#editable_filename").html(filemanager.createRandomString() + ".qsm");
+	reporter.hide();
+}

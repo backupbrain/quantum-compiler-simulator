@@ -46,7 +46,7 @@ section {
 	overflow: scroll;
 }
 #code_container {
-	width: 49%;
+	width: 59%;
 	float: left;
 }
 #code, #code div {
@@ -54,7 +54,7 @@ section {
 }
 
 #output_container {
-	width: 49%;
+	width: 39%;
 	float: right;
 }
 .title {
@@ -162,4 +162,81 @@ table thead th {
 table td, th {
 	text-align: left;
 	padding: 5px 10px;
+}
+#editor_toolbar {
+	padding-bottom: 10px;
+}
+
+#editor_toolbar label {
+	padding-left: 10px;
+}
+#editor_toolbar button {
+	padding: 10px 15px;
+	font-size: 0.9em;
+}
+.modal_dimmer {
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+	position: absolute;
+	top: 0px;
+}
+#file_lister {
+	max-width: 500px;
+	margin: 20px auto 0px auto;
+	background: #272625;
+	text-align: left;
+	max-width: 90vw;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.modal_title {
+	padding: 10px 10px;
+}
+.title_text {
+	display: block;
+	color: #A2A2A2;
+	float: left;
+	padding-top: 15px;
+	/* padding-left: 10px; */
+}
+.modal_title .close_modal {
+	display: block;
+	float: right;
+}
+.clear {
+	clear: both;
+}
+
+#file_lister table {
+	margin-top: 0px;
+}
+
+.file_list_container {
+	max-height: 70vh;
+	background-color: #000;
+	/* min-height: 200px; */
+}
+
+#editable_filename, #simulator_num_iterations {
+	display: inline-block;
+	background: #141413;
+	color: #A2A2A2;
+	border-radius: 5px;
+	padding: 5px;
+	margin-left: 10px;
+}
+#editable_filename {
+	width: 120px;	
+}
+#simulator_num_iterations {
+	border: 0px solid transparent;
+	width: 80px;
+}
+#file_name_toolbar {
+	padding-bottom: 10px;
 }

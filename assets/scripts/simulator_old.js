@@ -2,7 +2,7 @@
  * Quantum Computer Simulator - Controller Layer
  * Javascript Programmable Simulated Quantum Computer
  * @author Tony Gaitatzis <backupbrain@gmail.com>
- * @date 2018-09-15
+ * @date 2018-09-01
  */
  /*
 MIT License
@@ -28,15 +28,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
 var editor = null;
-var reporter = null;
 var runner = null;
 var filesystem = null;
 var filemanager = null;
-var summary = null;
-var outputs = null;
-var numIterations = null;
 
 math.config({
   number: 'BigNumber', // Default type of number:
@@ -46,65 +41,50 @@ math.config({
 
 qasm_script = '// Name of Experiment: Coin Flip v1\n\nOPENQASM 2.0;\n\nqreg q[3]; // declare qbits\ncreg c[3]; // declare registers\n\nh q[1]; // place heads side into superposition\ncx q[1],q[0]; // entangle heads and tails\nx q[1]; // set tails as opposite of heads\nmeasure q[0] -> c[0]; // measure heads, collapsing superposition\nmeasure q[1] -> c[1]; // measure tails\n// because of entanglement, heads and tails will always be opposite'
 
+$(document).ready(function() {
+	runner = new QasmRunner();
+	editor = new QasmEditor("code");
+	filesystem = new FileSystem();
+	filemanager = new FileManager("files");
+
+	$("#code").html(qasm_script);
+
+	$("#run").click(function(event) {
+		$("#visible_output").css("display", "none");
+		$("#progress_bar_container").css("display", "block");
+
+		startTime_ms = Date.now();
+		button = $("#run");
+		oldButtonText = button.html();
+		button.text("Simulating...");
+		button.prop("disabled", true);
+		qasm_script = $("#code").html();
+		qasm_script = qasm_script.replace(/\<br\>/g, "\n");
+		qasm_script = qasm_script.replace(/\&gt;/g, ">");
+		numIterations = parseInt($("#num_iterations").val());
+		runner.run(qasm_script, numIterations, updateProgressBar);
+
+		endTime_ms = Date.now();
+		timeLapse_ms = endTime_ms - startTime_ms;
+		$("#log").html(
+			numIterations + " iterations in " + timeLapse_ms + " milliseconds"
+		);
+		button.prop("disabled", false);
+		button.html(oldButtonText);
+		$("#visible_output").css("display", "block");
+		$("#progress_bar_container").css("display", "none");
+	});
+
+	$("#filename").val(filemanager.createRandomString());
+	$("#save").click(function(event) {
+		filename = $("#filename").val();
+		text = $("#editor").html();
+		filesystem.save(filename, text);
+		filemanager.refreshFileList();
+	});
+});
+
 function updateProgressBar(percent) {
 	console.log("progress: " + percent);
 	$("#progress_bar #progress").width(percent + "%");
 }
-
-$(document).ready(function() {
-	runner = new QasmRunner();
-	editor = new QasmEditor("code");
-	reporter = new QasmReporter();
-	filesystem = new FileSystem();
-	filemanager = new FileManager("file_list_container");
-
-	$("#code").html(qasm_script);
-
-	$("#simulator_run").click(function(event) {
-		console.log("running simulations...");
-		reporter.hide();
-		$("#progress_bar_container").css("display", "block");
-
-		startTime_ms = Date.now();
-		button = $("#simulator_run");
-		oldButtonText = button.html();
-		button.text("Simulating...");
-		button.prop("disabled", true);
-		code = editor.getCleanedCodeFromEditor();
-		console.log(code);
-		numIterations = editor.getNumIterations();
-		results = runner.run(code, numIterations, updateProgressBar);
-		summary = results["summary"];
-		outputs = results["output"];
-
-		// save file if needed
-		filename = editor.getFileName();
-		if (filesystem.doesFileExist(filename) == true) {
-			editor.save(filename, code, numIterations)
-		}
-
-		reporter.displaySummary(summary);
-		reporter.displayRawData(outputs);
-		endTime_ms = Date.now();
-		timeLapse_ms = endTime_ms - startTime_ms;
-		reporter.reportSpeed(numIterations, timeLapse_ms);
-
-		button.prop("disabled", false);
-		button.html(oldButtonText);
-		reporter.show();
-		$("#progress_bar_container").css("display", "none");
-		console.log("done");
-	});
-
-	$("#file_save").click(function(event) {
-		filename = $("#editable_filename").html();
-		code = editor.getCleanedCodeFromEditor();
-		numIterations = editor.getNumIterations();
-		editor.save(filename, code, numIterations);
-	});
-	$("#file_new").click(function(event) {
-		editor.new();
-	});
-
-	$("#editable_filename").html(filemanager.createRandomString() + ".qsm");
-});
