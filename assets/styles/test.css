@@ -1,3 +1,4 @@
+/* 
 #editor_toolbar {
 	padding-bottom: 10px;
 }
@@ -28,6 +29,7 @@
 .modal_title {
 	padding: 10px 10px;
 }
+*/
 .title_text {
 	display: block;
 	color: #A2A2A2;
@@ -35,6 +37,7 @@
 	padding-top: 15px;
 	/* padding-left: 10px; */
 }
+/*
 .modal_title .close_modal {
 	display: block;
 	float: right;
@@ -71,3 +74,19 @@
 #file_name_toolbar {
 	padding-bottom: 10px;
 }
+*/
+#code_editor {
+	/* background: #141413; */
+	/* color: #A2A2A2; */
+	/* border: 1px solid #ccc; */
+	/* border-radius: 5px; */
+	height: 400px;
+	padding: 5px;
+	/* white-space: pre; */
+	/* overflow: scroll; */
+}
+/*
+.ace_gutter-cell, .ace_layer,   {
+	font-size: 12px;
+}
+*/

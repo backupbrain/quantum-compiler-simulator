@@ -4,10 +4,8 @@ function QasmReporter() {
 
 QasmReporter.prototype.displaySummary = function(summaryData) {
 	if ((summaryData == null) || (summaryData.length == 0)) {
-		console.log("no summary data found");
 		$("#output_overview").fadeOut(100);
 	} else {
-		console.log("summary data found");
 		const tableMarkup = `<table id="simulator_overview">
 			<thead>
 				<tr>
@@ -34,10 +32,8 @@ QasmReporter.prototype.displayRawData = function(rawData, inLittleEndianMode=tru
 		packagedData.push(package);
 	}
 	if ((rawData == null) || (rawData.length == 0)) {
-		console.log("no raw data found");
 		$("#output_raw_data").fadeOut(100);
 	} else {
-		console.log("raw data found");
 		const rawDataTableMarkup = `<table id="simulator_output_data">
 			<thead>
 				<tr>

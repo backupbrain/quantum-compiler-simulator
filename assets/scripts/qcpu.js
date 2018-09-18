@@ -29,7 +29,7 @@ SOFTWARE.
 */
 
 function QCPU() {
-	this.in_verbose_mode = true;
+	this.in_verbose_mode = false;
 	this.MAX_QUBITS = 5;
 	this.qubits = [];
 	this.registers = [];

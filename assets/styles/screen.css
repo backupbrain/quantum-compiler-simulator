@@ -7,7 +7,7 @@ body {
 a {
 	color: #fff;
 }
-body, div, p, input, button, th, td, li, textarea, dd, dt {
+body, p, input, button, th, td, li, textarea, dd, dt {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
 }
@@ -37,20 +37,20 @@ section {
 }
 #code {
 	background: #141413;
-	color: #A2A2A2;
+	/* color: #A2A2A2; */
 	/* border: 1px solid #ccc; */
-	border-radius: 5px;
+	/* border-radius: 5px; */
 	height: 400px;
 	padding: 5px;
-	white-space: pre;
-	overflow: scroll;
+	/* white-space: pre; */
+	/* overflow: scroll; */
 }
 #code_container {
 	width: 59%;
 	float: left;
 }
 #code, #code div {
-	font-family: "Lucida Console", "Courier New", fixed;
+	/* font-family: "Lucida Console", "Courier New", fixed; */
 }
 
 #output_container {

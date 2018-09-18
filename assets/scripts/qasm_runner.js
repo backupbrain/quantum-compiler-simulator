@@ -92,7 +92,6 @@ QasmRunner.prototype.run = function(script, numIterations, callback) {
 		"summary": this.summary,
 		"output": this.results
 	}
-	console.log(output);
 	return output;
 }
 

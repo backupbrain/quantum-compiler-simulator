@@ -17,8 +17,9 @@
 	<!--script src="assets/scripts/simulator.js"></script-->
 	<script src="assets/scripts/filesystem.js"></script>
 	<script src="assets/scripts/qasm_file.js"></script>
-	<script src="assets/scripts/filemanager1.js"></script>
+	<script src="assets/scripts/filemanager.js"></script>
 	<script src="assets/scripts/lz-string.min.js"></script>
+	<script src="assets/scripts/ace-min/ace.js" charset="utf-8"></script>
 
 	<!-- Facebook OpenGraph -->
 	<meta property="og:url" content="https://backupbrain.github.io/quantum-compiler-simulator/" />
@@ -60,11 +61,14 @@ function updateProgressBar(percent) {
 $(document).ready(function() {
 
 	runner = new QasmRunner();
-	editor = new QasmEditor("code");
+	//editor = new QasmEditor("code");
 	filesystem = new FileSystem();
-	filemanager = new FileManager1("file_list_container");
+	filemanager = new FileManager("file_list_container");
+	editor = ace.edit("code_editor");
+    editor.setTheme("ace/theme/tomorrow_night")
+    editor.session.setMode("ace/mode/assembly_x86");
 
-	$("#code").html(qasm_script);
+	//$("#code").html(qasm_script);
 
 	$("#simulator_run").click(function(event) {
 		console.log("running simulations...");
@@ -76,7 +80,7 @@ $(document).ready(function() {
 		oldButtonText = button.html();
 		button.text("Simulating...");
 		button.prop("disabled", true);
-		qasm_script = $("#code").html();
+		qasm_script = editor.getValue();
 		qasm_script = qasm_script.replace(/\<br\>/g, "\n");
 		qasm_script = qasm_script.replace(/\&gt;/g, ">");
 		numIterations = parseInt($("#simulator_num_iterations").val());
@@ -140,7 +144,19 @@ $(document).ready(function() {
 						<div id="progress">&nbsp;</div>
 					</div>
 				</div>
-				<div id="code" contentEditable="true"></div>
+				<div id="code_editor">// Name of Experiment: Coin Flip v1
+
+OPENQASM 2.0;
+qreg q[3]; // declare qbits
+creg c[3]; // declare registers
+
+h q[1]; // place heads side into superposition
+cx q[1],q[0]; // entangle heads and tails
+x q[1]; // set tails as opposite of heads
+
+measure q[0] -> c[0]; // measure heads, collapsing superposition
+measure q[1] -> c[1]; // measure tails
+// because of entanglement, heads and tails will always be opposite</div>
 			</div>
 		</section>
 	</article>

@@ -28,7 +28,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-
+var ide = null;
 var editor = null;
 var reporter = null;
 var runner = null;
@@ -47,21 +47,24 @@ math.config({
 qasm_script = '// Name of Experiment: Coin Flip v1\n\nOPENQASM 2.0;\n\nqreg q[3]; // declare qbits\ncreg c[3]; // declare registers\n\nh q[1]; // place heads side into superposition\ncx q[1],q[0]; // entangle heads and tails\nx q[1]; // set tails as opposite of heads\nmeasure q[0] -> c[0]; // measure heads, collapsing superposition\nmeasure q[1] -> c[1]; // measure tails\n// because of entanglement, heads and tails will always be opposite'
 
 function updateProgressBar(percent) {
-	console.log("progress: " + percent);
 	$("#progress_bar #progress").width(percent + "%");
 }
 
 $(document).ready(function() {
 	runner = new QasmRunner();
-	editor = new QasmEditor("code");
+	editor = ace.edit("code");
+    editor.setTheme("ace/theme/tomorrow_night")
+    editor.session.setMode("ace/mode/assembly_x86");
 	reporter = new QasmReporter();
 	filesystem = new FileSystem();
 	filemanager = new FileManager("file_list_container");
 
-	$("#code").html(qasm_script);
+
+	ide = new QasmIde();
+	//$("#code").html(qasm_script);
+	editor.session.setValue(qasm_script);
 
 	$("#simulator_run").click(function(event) {
-		console.log("running simulations...");
 		reporter.hide();
 		$("#progress_bar_container").css("display", "block");
 
@@ -70,17 +73,16 @@ $(document).ready(function() {
 		oldButtonText = button.html();
 		button.text("Simulating...");
 		button.prop("disabled", true);
-		code = editor.getCleanedCodeFromEditor();
-		console.log(code);
-		numIterations = editor.getNumIterations();
+		code = ide.getCleanedCodeFromEditor();
+		numIterations = ide.getNumIterations();
 		results = runner.run(code, numIterations, updateProgressBar);
 		summary = results["summary"];
 		outputs = results["output"];
 
 		// save file if needed
-		filename = editor.getFileName();
+		filename = ide.getFileName();
 		if (filesystem.doesFileExist(filename) == true) {
-			editor.save(filename, code, numIterations)
+			ide.save(filename, code, numIterations)
 		}
 
 		reporter.displaySummary(summary);
@@ -93,18 +95,6 @@ $(document).ready(function() {
 		button.html(oldButtonText);
 		reporter.show();
 		$("#progress_bar_container").css("display", "none");
-		console.log("done");
 	});
 
-	$("#file_save").click(function(event) {
-		filename = $("#editable_filename").html();
-		code = editor.getCleanedCodeFromEditor();
-		numIterations = editor.getNumIterations();
-		editor.save(filename, code, numIterations);
-	});
-	$("#file_new").click(function(event) {
-		editor.new();
-	});
-
-	$("#editable_filename").html(filemanager.createRandomString() + ".qsm");
 });

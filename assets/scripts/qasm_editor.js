@@ -54,6 +54,17 @@ QasmEditor.prototype.init = function() {
 
 		}
 	});
+	
+	$("#file_save").click(function(event) {
+		filename = $("#editable_filename").html();
+		code = this.getCleanedCodeFromEditor();
+		numIterations = this.getNumIterations();
+		this.save(filename, code, numIterations);
+	});
+	$("#file_new").click(function(event) {
+		this.new();
+	});
+	this.new();
 }
 
 QasmEditor.prototype.getCaretPosition = function() {

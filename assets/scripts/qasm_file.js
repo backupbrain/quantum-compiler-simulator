@@ -7,7 +7,6 @@ function QasmFile() {
 
 QasmFile.prototype.fromString = function(string) {
 	var object = JSON.parse(string);
-	console.log(object);
 	this.code = object.code;
 	this.numIterations = object.numIterations;
 	this.summary = object.summary;

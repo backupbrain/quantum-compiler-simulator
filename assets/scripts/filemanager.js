@@ -52,10 +52,8 @@ FileManager.prototype.hide = function() {
 
 FileManager.prototype.refreshFileList = function() {
 	self = this;
-	console.log("refreshing file list");
 	//filenames = filesystem.listFiles();
 	files = filesystem.getFiles();
-	console.log(files);
 	for (var i = 0; i < files.length; i++) {
 		date = new Date(files[i].mtime);
 		year = date.getFullYear();
@@ -91,7 +89,7 @@ FileManager.prototype.refreshFileList = function() {
 			if (fileData.contents != null) {
 				qasmFile = new QasmFile();
 				qasmFile.fromString(fileData.contents);
-				editor.loadFile(filename, qasmFile.code, qasmFile.numIterations);
+				ide.loadFile(filename, qasmFile.code, qasmFile.numIterations);
 				reporter.displaySummary(qasmFile.summary);
 				reporter.displayRawData(qasmFile.outputs);
 			}
