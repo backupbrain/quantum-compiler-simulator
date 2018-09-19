@@ -79,6 +79,11 @@ FileManager.prototype.refreshFileList = function() {
 					<td><button class="delete">Delete</button></td>
 				</tr>`).join("")}
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4">All files stored on your browser</td>
+				</tr>
+			</tfoot>
 		</table>`;
 		$("#" + this.containerId).html(tableMarkup);
 
@@ -115,6 +120,11 @@ FileManager.prototype.refreshFileList = function() {
 					<td colspan="4"><em>You haven't saved any files</em></td>
 				</tr>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4">All files stored on your browser</td>
+				</tr>
+			</tfoot>
 		</table>`
 		$("#" + this.containerId).html(tableMarkup);
 	}

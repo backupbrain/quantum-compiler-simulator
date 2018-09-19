@@ -46,6 +46,12 @@ QasmReporter.prototype.displayRawData = function(rawData, inLittleEndianMode=tru
 
 		$("#output_raw_data").html(rawDataTableMarkup);
 		$("#output_raw_data").fadeIn(100);
+
+
+		downloader = new DataDownloader();
+		csvData = downloader.convertObjectsToCsv(packagedData);
+		urlEncodedCsvData = downloader.createDownloadLink(csvData);
+		downloader.link("download_raw_data", urlEncodedCsvData, ide.getFileName() + ".csv");
 		this.show();
 	}
 }

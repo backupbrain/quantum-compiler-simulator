@@ -62,6 +62,8 @@ QasmIde.prototype.getNumIterations = function() {
 
 QasmIde.prototype.loadFile = function(filename, code, numIterations) {
 	$("#editable_filename").html(filename);
+	downloader = new DataDownloader();
+	downloader.link("file_download", code, filename);
 
 	editor.session.setValue(code);
 	$("#simulator_num_iterations").val(numIterations);
@@ -83,6 +85,8 @@ QasmIde.prototype.save = function() {
 
 QasmIde.prototype.new = function() {
 	editor.session.setValue("");
-	$("#editable_filename").html(filemanager.createRandomString() + ".qsm");
+	filename = filemanager.createRandomString() + ".qsm"
+	$("#editable_filename").html(filename);
+	downloader = new DataDownloader("file_download", "", filename);
 	reporter.hide();
 }

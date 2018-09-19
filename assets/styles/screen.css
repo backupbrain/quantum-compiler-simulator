@@ -159,6 +159,9 @@ table thead th {
 	color: #F8F7F8;
 	font-weight: normal;
 }
+table tfoot {
+	background: #272625;
+}
 table td, th {
 	text-align: left;
 	padding: 5px 10px;
@@ -172,6 +175,7 @@ table td, th {
 }
 #editor_toolbar button {
 	padding: 10px 15px;
+	/* font-size: 0.7em; */
 	font-size: 0.9em;
 }
 .modal_dimmer {
@@ -235,8 +239,14 @@ table td, th {
 }
 #simulator_num_iterations {
 	border: 0px solid transparent;
-	width: 80px;
+	width: 70px;
 }
 #file_name_toolbar {
 	padding-bottom: 10px;
+}
+#download_raw_data_container {
+	display: inline-block;
+}
+#output_raw_data_overview {
+	display: inline-block;
 }

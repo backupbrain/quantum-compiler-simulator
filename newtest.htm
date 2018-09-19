@@ -1,29 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<title>ACE in Action</title>
-<style type="text/css" media="screen">
-    #editor { 
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-</style>
-</head>
+	<head>
+		<title>Lexical Analyzer</title>
+		<script src="assets/scripts/jquery/3.3.1/jquery.min.js"></script>
+		<script src="assets/scripts/lexical_analyzer.js"></script>
+		<script src="assets/scripts/data_downloader.js"></script>
+
+		<script>
+
+			var lex = null;
+			var cleanedText = null;
+			$(document).ready(function() {
+				text = $("#editor").html().replace(/&gt;/g, ">");
+				console.log(text);
+				lex = new LexicalAnalyzer(text);
+				cleanedText = lex.run(text);
+				console.log(cleanedText);
+
+				data = [
+					{
+						"Iteration": 1,
+						"Output": "001",
+					},
+					{
+						"Iteration": 2,
+						"Output": "010",
+					},
+					{
+						"Iteration": 3,
+						"Output": "011",
+					}
+				];
+
+				downloader = new DataDownloader("test_link", data, "iterations.csv");
+
+			});
+		</script>
+	</head>
 <body>
 
-<div id="editor">function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
-}</div>
-    
-<script src="assets/scripts/ace-min/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/assembly_x86");
-</script>
+	<a href="" id="test_link">Download data</a>
+
+	<div id="editor" style="white-space: pre">// Name of Experiment: Coin Flip v1
+
+OPENQASM 2.0;
+qreg q[3]; // declare qbits
+creg c[3]; // declare registers
+
+    h q[1]; // place heads side into superposition
+cx q[1],q[0]; // entangle heads and tails
+x q[1]; // set tails as opposite of heads
+
+measure q[0] ->    c[0]; // measure heads, collapsing superposition
+measure q[1] -> c[1]; // measure tails
+// because of entanglement, heads and tails will always be opposite
+
+gate cu1(lambda) a,b
+{
+  U(0,0,theta/2) a;
+  CX a,b;
+  U(0,0,-theta/2) b;
+  CX a,b;
+  U(0,0,theta/2) b;
+}
+cu1(pi/2) q[0],q[1];
+
+U(pi/2,2*pi/3,0) q[0];
+
+crz(pi/2) q[1],q[0];
+if(c==5) CX q[0],q[1];
+
+opaque op1(lambda) a,b;
+</div>
+	    
 </body>
 </html>

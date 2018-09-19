@@ -21,6 +21,7 @@
 	<script src="assets/scripts/qasm_file.js"></script>
 	<script src="assets/scripts/simulator.js"></script>
 	<script src="assets/scripts/ace-min/ace.js" charset="utf-8"></script>
+	<script src="assets/scripts/data_downloader.js"></script>
 
 	<!-- Facebook OpenGraph -->
 	<meta property="og:url" content="https://backupbrain.github.io/quantum-compiler-simulator/" />
@@ -74,18 +75,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 			<div id="editor_container">
 				<div id="editor_toolbar">
-					<button id="file_new" alt="New File"><i class="fas fa-file-alt"></i></button>
-					<button id="file_open" alt="Open File from Local Storage"><i class="fas fa-folder-open"></i></button>
+					<button id="file_new" title="New File"><i class="fas fa-file-alt"></i></button>
+					<button id="file_open" title="Open File from Local Storage"><i class="fas fa-folder-open"></i></button>
 
 					<label for="editable_filename">File: 
 						<div id="editable_filename" contentEditable="true"></div>
 					</label>
 
-					<button id="file_save" alt="Save File to Local Storage"><i class="fas fa-save"></i></button>
+					<button id="file_save" title="Save File to Local Storage"><i class="fas fa-save"></i></button>
+
+					<!--button id="file_download" title="Download Code"><i class="fas fa-file-download"></i></button-->
 					<label for="simulator_num_iterations"># Runs: 
 						<input type="number" id="simulator_num_iterations" value="100" size="5" />
 					</label>
-					<button id="simulator_run" alt="Run Simulation"><i class="fas fa-play"></i></button>
+					<button id="simulator_run" title="Run Simulation"><i class="fas fa-play"></i></button>
 				</div>
 				<div id="progress_bar_container" class="start_hidden">
 					<div id="progress_bar">
@@ -102,6 +105,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						<h3 id="output_overview">Summary</h3>
 						<div id="log"></div>
 						<h3 id="output_raw_data_overview">Raw Data</h3>
+						<div id="download_raw_data_container">
+							(<a id="download_raw_data" href="">Download CSV</a>)
+						</div>
 						<div id="output_raw_data"></div>
 					</div>
 				</div>
